@@ -1,3 +1,4 @@
+const uploadFileToGC = require("../common/uploadFileToGC");
 const Upload = require("../models/model.upload");
 
 const saveFile = async (req, res) => {
@@ -10,7 +11,7 @@ const saveFile = async (req, res) => {
       encoding,
       size: fileSize,
     } = req.file;
-    const filePath = "";
+    const filePath = await uploadFileToGC(buffer);
     const upload = await Upload.create({
       userID,
       filePath,
