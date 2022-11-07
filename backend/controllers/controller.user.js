@@ -76,6 +76,7 @@ const register_user = async (req, res) => {
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
       
       //Create user session
+      // TODO - Include user type
       const token = jwt.sign({ 
         id: user._id }, 
         process.env.JWT_SECRET,{

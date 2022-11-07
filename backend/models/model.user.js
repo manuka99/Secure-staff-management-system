@@ -6,31 +6,28 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
-    {
-        name: { 
-            type: String, 
-            required: true,
-            trim: true,
-            max: 60 
-        },
-        email: { 
-            type: String, 
-            required: true, 
-            unique: true, 
-            trim: true,
-            max: 100
-        },
-        password: 
-        { type: String, 
-            required: true, 
-            min: 8 
-        },
-        user_type: { 
-            type: String, 
-            required: true
-        }
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      max: 60,
     },
-    { timestamps: true}
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      max: 100,
+    },
+    password: { type: String, required: true, min: 8 },
+    user_type: {
+      type: String,
+      required: true,
+      enum: ["worker", "manager"],
+    },
+  },
+  { timestamps: true }
 );
 
 //Export user module
