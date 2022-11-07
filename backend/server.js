@@ -8,9 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-//Add routes
-const UserPath = require('./routes/route.user');
-
 
 const PORT = process.env.PORT || 5000;
 
@@ -30,4 +27,6 @@ mongoose.connect(
 );
 
 //Set up routes
-app.use('/user', UserPath());
+//API routes
+const apiRoutes = require('./routes/route.api');
+app.use('/api', apiRoutes);
