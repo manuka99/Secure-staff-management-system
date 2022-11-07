@@ -12,7 +12,8 @@ const saveMsg = async (req, res) => {
 
 const getSentMsgs = async (req, res) => {
   try {
-    const messages = await Message.find({});
+    const { id: userID } = req.user;
+    const messages = await Message.find({ userID });
     return res.status(200).json({ messages });
   } catch (err) {
     return res.status(500).json({ error: err.message });
