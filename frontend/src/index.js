@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "./components/services/worker.service";
 
 //External Plugins
 import "./components/plugins/fontawesome";
