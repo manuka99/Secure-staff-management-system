@@ -6,7 +6,6 @@ import Home from "./components/pages/Home";
 import Landing from "./components/pages/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
-import FileUpload from "./components/pages/FileUpload";
 import UserContext from "./context/userContext";
 import "./App.css";
 
@@ -48,7 +47,7 @@ function App() {
         <Header />
         <Switch>
           <Route exact path="/" component={Landing} />
-          <Route path="/register" component={FileUpload} />
+          <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
         </Switch>
       </UserContext.Provider>
