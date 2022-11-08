@@ -37,21 +37,35 @@ function Register () {
     };
    
     return ( 
-        <div className="register">
+        <div class="login container w-50 register">
+        <div class="card-columns d-flex justify-content-center">
             <h2>Register</h2>
-            {error && <ErrorNotice message={error} clearError={() => setError(undefined)} />}
-            <form onSubmit={submit}>
-                <label>Email: </label>
-                <input type="email" id="email" onChange={e => setEmail(e.target.value)}/>
-                <label>Password: </label>
-                <input type="password" id="password" onChange={e => setPassword(e.target.value)}/>
-                <input type="password" placeholder="Confirm password" onChange={e => setPasswordCheck(e.target.value)}/>
-                <label>Display name </label>
-                <input type="text" id="dsplay-name" onChange={e => setDisplayName(e.target.value)}/>
-                <input type="submit" value="Register" className="btn btn-primary" />
-            </form>
-        </div>
-        );
+        </div>    
+        {error && <ErrorNotice message={error} clearError={() => setError(undefined)} />}
+        <form onSubmit={submit}>
+            <div class="form-group">
+                <label for="exampleInputEmail1 text-start">Email address</label>
+                <input type="email" class="form-control" placeholder="Enter email" onChange={e => setEmail(e.target.value)}/>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Confirm Password</label>
+                <input type="password" class="form-control" placeholder="Confirm Password" onChange={e => setPasswordCheck(e.target.value)}/>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Display Name</label>
+                <input type="text" class="form-control" id="display-name" placeholder="Display Name" onChange={e => setDisplayName(e.target.value)}/>
+            </div>    
+            <div class="card-columns d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </div>  
+            
+        </form>
+    </div>
+    );
 }
  
 export default Register;

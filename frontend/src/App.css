@@ -6,15 +6,33 @@
   display:flex;
   align-items:center;
   justify-content: space-between;
-  background-color: #66004d;
+  background-color: #0d0238;
 }
 .header a{
   color: #fff;
   text-decoration: none;
-}
-.register{
-  text-align:center;
+  margin-left: 3%;
 }
 .register input{
   /* display:block; */
+}
+
+.card{
+  margin-top: 5%;
+}
+
+h3{
+  text-align: center;
+  margin-top: 10%;
+}
+
+.btnAd{
+  margin: auto;
+}
+
+.login{
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 50px;
+  margin-top: 4%;
 }
