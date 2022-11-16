@@ -50,6 +50,7 @@ function App() {
           <Route exact path="/" component={Landing} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
+          <Route path="/upload" component={FileUpload} />
         </Switch>
       </UserContext.Provider>
     </BrowserRouter>

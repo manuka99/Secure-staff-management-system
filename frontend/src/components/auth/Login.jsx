@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import UserContext from "../../context/userContext";
 import ErrorNotice from "../../components/misc/ErrorNotice";
+import { LoginApi } from '../../services/auth.service';
+import { APP_USER_TOKEN } from '../../config';
 
 function Login () {
     const [email, setEmail] = useState();
@@ -16,12 +17,12 @@ function Login () {
         e.preventDefault();
         try{
             const loginUser = {email, password};
-            const loginResponse = await axios.post("http://localhost:5000/users/login", loginUser);
+            let loginResponse = await LoginApi(loginUser)
             setUserData({
-                token: loginResponse.data.token,
-                user: loginResponse.data.user
+                token: loginResponse?.data.token,
+                user: loginResponse?.data.user
             });
-            localStorage.setItem("auth-token", loginResponse.data.token);
+            localStorage.setItem(APP_USER_TOKEN, loginResponse.data.token);
             history.push("/");
         } catch(err) {
             err.response.data.msg && setError(err.response.data.msg)
