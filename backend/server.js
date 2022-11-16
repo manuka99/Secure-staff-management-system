@@ -31,7 +31,7 @@ mongoose.connect(
 app.use("/api", apiRoutes);
 
 const PORT = process.env.PORT || 8080;
-const HTTP_PORT = process.env.HTTP_PORT || 5080;
+const HTTP_PORT = process.env.HTTP_PORT || 5000;
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, `cert`, `key.pem`)),
