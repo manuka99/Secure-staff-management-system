@@ -1,6 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
+const apiRoutes = require("./routes/route.api");
+
 require("dotenv").config();
 
 // set up express
@@ -8,17 +13,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`The server has started on port: ${PORT}`));
-
 //Set up mongoose
 mongoose.connect(
   process.env.MONGODB_URL,
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   },
   (err) => {
     if (err) throw err;
@@ -28,5 +28,17 @@ mongoose.connect(
 
 //Set up routes
 //API routes
-const apiRoutes = require('./routes/route.api');
-app.use('/api', apiRoutes);
+app.use("/api", apiRoutes);
+
+const PORT = process.env.PORT || 5000;
+
+const options = {
+  key: fs.readFileSync(path.join(__dirname, `cert`, `key.pem`)),
+  cert: fs.readFileSync(path.join(__dirname, `cert`, `cert.pem`)),
+};
+
+const sslServer = https.createServer(options, app);
+
+sslServer.listen(PORT, () => {
+  console.log(`Secure server is listening on port ${PORT}`);
+});
