@@ -4,6 +4,7 @@
  */
 
 const mongoose = require("mongoose");
+const UserRoles = require("../enum/User.enum");
 
 const userSchema = new mongoose.Schema(
   {
@@ -24,7 +25,7 @@ const userSchema = new mongoose.Schema(
     user_type: {
       type: String,
       required: true,
-      enum: ["worker", "manager"],
+      enum: [UserRoles.MANAGER, UserRoles.WORKER],
     },
   },
   { timestamps: true }
