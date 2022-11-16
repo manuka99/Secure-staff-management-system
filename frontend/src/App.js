@@ -5,6 +5,7 @@ import Header from "./components/layout/Header";
 import Home from "./components/pages/Home";
 import FileUpload from "./components/pages/FileUpload";
 import Landing from "./components/pages/Landing";
+import MessageUpload from "./components/pages/MessageUpload";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import UserContext from "./context/userContext";
@@ -24,14 +25,17 @@ function App() {
         token = "";
       }
       const tokenResponse = await axios.post(
-        "http://localhost:5000/users/tokenIsValid",
+        `http://${process.env.REACT_APP_BASE_URL}/users/tokenIsValid`,
         null,
         {headers: {"x-auth-token": token}}
       );
       if (tokenResponse.data) {
-        const userRes = await axios.get("http://localhost:5000/users/", {
-          headers: {"x-auth-token": token},
-        });
+        const userRes = await axios.get(
+          `http://${process.env.REACT_APP_BASE_URL}/users/`,
+          {
+            headers: {"x-auth-token": token},
+          }
+        );
         setUserData({
           token,
           user: userRes.data,
@@ -47,7 +51,7 @@ function App() {
       <UserContext.Provider value={{userData, setUserData}}>
         <Header />
         <Switch>
-          <Route exact path="/" component={Landing} />
+          <Route exact path="/" component={MessageUpload} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
         </Switch>

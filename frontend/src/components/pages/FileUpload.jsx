@@ -28,17 +28,13 @@ export default class UploadFiles extends Component {
 
   upload() {
     let currentFile = this.state.selectedFiles[0];
-
+    let fileName =  this.state.selectedFiles[0].name;
     this.setState({
-      progress: 0,
+      fileName: fileName,
       currentFile: currentFile,
     });
 
-    UploadService.upload(currentFile, (event) => {
-      this.setState({
-        progress: Math.round((100 * event.loaded) / event.total),
-      });
-    })
+    UploadService.upload(currentFile, fileName)
       .then((response) => {
         this.setState({
           message: response.data.message,
@@ -119,19 +115,6 @@ export default class UploadFiles extends Component {
         <div className="alert alert-light" role="alert">
           {message}
         </div>
-
-        {fileInfos.length > 0 && (
-          <div className="card">
-            <div className="card-header">List of Files</div>
-            <ul className="list-group list-group-flush">
-              {fileInfos.map((file, index) => (
-                <li className="list-group-item" key={index}>
-                  <a href={file.url}>{file.name}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     );
   }

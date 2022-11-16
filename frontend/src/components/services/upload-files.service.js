@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 class UploadFilesService {
-  upload(file, onUploadProgress) {
+  upload(file, fileName) {
     let formData = new FormData();
 
     formData.append("file", file);
@@ -17,7 +17,7 @@ class UploadFilesService {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      onUploadProgress,
+      fileName,
     });
   }
 
