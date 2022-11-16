@@ -30,7 +30,8 @@ mongoose.connect(
 //API routes
 app.use("/api", apiRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.HTTP_PORT || 5080;
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, `cert`, `key.pem`)),
@@ -41,4 +42,8 @@ const sslServer = https.createServer(options, app);
 
 sslServer.listen(PORT, () => {
   console.log(`Secure server is listening on port ${PORT}`);
+});
+
+app.listen(HTTP_PORT, () => {
+  console.log(`HTTP server is listening on port ${HTTP_PORT}`);
 });
