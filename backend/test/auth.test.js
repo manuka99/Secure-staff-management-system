@@ -32,44 +32,44 @@ describe("POST User Identification", () => {
     //   .catch((err) => done(err));
   });
 
-  it("Registering a new user entity", (done) => {
+  it("Add a new manager", (done) => {
     request(app)
-      .post("/api/admin/general/registration")
+      .post("/api/user/register")
       .send(validUser)
       .then((res) => {
-        const data = res.body.data;
+        const data = res.body;
         expect(res).to.contain.property("statusCode", 200);
-        expect(data).to.contain.property("message");
         expect(data).to.not.be.empty;
+        expect(data).to.contain.property("msg");
         expect(data).to.not.contain.property("password");
         done();
       })
       .catch((err) => done(err));
   });
 
-  it("New user can sign in with valid credentials", (done) => {
+  it("A manager can sign in with valid credentials", (done) => {
     request(app)
-      .post("/api/guest/general/login")
+      .post("/api/user/login")
       .send(validLoginCredentials)
       .then((res) => {
-        const data = res.body.data;
+        const data = res.body;
         expect(res).to.contain.property("statusCode", 200);
-        expect(data).to.contain.property("message");
         expect(data).to.not.be.empty;
+        expect(data).to.contain.property("token");
         done();
       })
       .catch((err) => done(err));
   });
 
-  it("User cannot sign in with invalid credentials", (done) => {
+  it("A user cannot sign in with invalid credentials", (done) => {
     request(app)
-      .post("/api/guest/general/login")
+      .post("/api/user/login")
       .send(inValidLoginCredentials)
       .then((res) => {
-        const data = res.body.data;
+        const data = res.body;
         expect(res).to.contain.property("statusCode", 400);
-        expect(data).to.contain.property("message");
         expect(data).to.not.be.empty;
+        expect(data).to.contain.property("msg");
         done();
       })
       .catch((err) => done(err));
@@ -117,31 +117,19 @@ describe("POST User Identification", () => {
 });
 
 const validUser = {
-  firstName: "Manuka",
-  middleName: "Yasas",
-  lastName: "Rankothpelige",
-  gender: "male",
-  nationalID: "199920610568",
-  dateOfBirth: new Date("1999-07-24"),
-  phone: 0721146092,
   email: "manukayasas99@gmail.com",
-  street: "main",
-  province: "western",
-  district: "colombo",
-  country: "Sri Lanka",
-  nationality: "sinhala",
-  zipCode: 106300,
-  address: "1027/5 colombo",
-  raw_password: "test123@123",
-  imagePaths: [""],
+  password: "12345678",
+  re_password: "12345678",
+  name: "manuka",
+  user_type: "manager",
 };
 
 const validLoginCredentials = {
-  nationalID: "199920610568",
-  raw_password: "test123@123",
+  email: "manukayasas99@gmail.com",
+  password: "12345678",
 };
 
 const inValidLoginCredentials = {
-  nationalID: "199920610568",
-  raw_password: "test123@123s",
+  email: "manukayasas99@gmail.com",
+  password: "123456789",
 };
