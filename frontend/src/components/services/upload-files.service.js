@@ -1,29 +1,9 @@
-import axios from "axios";
+import Api from "../../common/Api";
 
-const api = axios.create({
-  baseURL: `http://localhost:5000/api`,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export const FileUploadApi = (payload) => {
+  return Api().post(`/upload`, payload);
+};
 
-class UploadFilesService {
-  upload(file, onUploadProgress) {
-    let formData = new FormData();
-
-    formData.append("file", file);
-
-    return api.post("/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress,
-    });
-  }
-
-  // getFiles() {
-  //   return api.get('/files');
-  //  }
-}
-
-export default new UploadFilesService();
+export const MsgUploadApi = (payload) => {
+  return Api().post(`/message`, payload);
+};

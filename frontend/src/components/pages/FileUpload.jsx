@@ -1,138 +1,77 @@
-import React, { Component } from 'react';
-import Dropzone from 'react-dropzone';
+import React, { useState, useContext } from 'react';
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import UserContext from "../../context/userContext";
+import { MsgUploadApi, FileUploadApi } from '../services/upload-files.service';
+import { APP_USER_TOKEN } from '../../config';
 
-import UploadService from '../services/upload-files.service';
+function FileUpload () {
+    const [text, setMsg] = useState();
+    const [selectedFile, setSelectedFile] = useState(null);
+    const id = APP_USER_TOKEN
+    const history = useHistory();
 
-export default class UploadFiles extends Component {
-  constructor(props) {
-    super(props);
-    this.upload = this.upload.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-
-    this.state = {
-      selectedFiles: undefined,
-      currentFile: undefined,
-      progress: 0,
-      message: '',
-      fileInfos: [],
+    const submitMsg = async (e) => {
+        e.preventDefault();
+        
+        try{
+            const Message = {id, text};
+            await MsgUploadApi(Message);
+           // history.push("/login");
+        } catch(err) {
+            console.log(err)
+        }
+        
     };
-  }
 
-  componentDidMount() {
-   // UploadService.getFiles().then((response) => {
-      //this.setState({
-    //  //  fileInfos: response.data,
-    //  });
-  //  });
-  }
-
-  upload() {
-    let currentFile = this.state.selectedFiles[0];
-
-    this.setState({
-      progress: 0,
-      currentFile: currentFile,
-    });
-
-    UploadService.upload(currentFile, (event) => {
-      this.setState({
-        progress: Math.round((100 * event.loaded) / event.total),
-      });
-    })
-      .then((response) => {
-        this.setState({
-          message: response.data.message,
-        });
-        return UploadService.getFiles();
-      })
-      .then((files) => {
-        this.setState({
-          fileInfos: files.data,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          progress: 0,
-          message: 'Could not upload the file!',
-          currentFile: undefined,
-        });
-      });
-
-    this.setState({
-      selectedFiles: undefined,
-    });
-  }
-
-  onDrop(files) {
-    if (files.length > 0) {
-      this.setState({ selectedFiles: files });
-    }
-  }
-
-  render() {
-    const { selectedFiles, currentFile, progress, message, fileInfos } =
-      this.state;
-
+    const submitFile = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            await FileUploadApi(formData);
+           // history.push("/login");
+        } catch(err) {
+            console.log(err)
+        }
+    };
+   
     return (
-      <div>
-        {currentFile && (
-          <div className="progress mb-3">
-            <div
-              className="progress-bar progress-bar-info progress-bar-striped"
-              role="progressbar"
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style={{ width: progress + '%' }}
-            >
-              {progress}%
-            </div>
-          </div>
-        )}
-
-        <Dropzone onDrop={this.onDrop} multiple={false}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                {selectedFiles && selectedFiles[0].name ? (
-                  <div className="selected-file">
-                    {selectedFiles && selectedFiles[0].name}
-                  </div>
-                ) : (
-                  'Drag and drop file here, or click to select file'
-                )}
-              </div>
-              <aside className="selected-file-wrapper">
-                <button
-                  className="btn btn-success"
-                  disabled={!selectedFiles}
-                  onClick={this.upload}
-                >
-                  Upload
-                </button>
-              </aside>
-            </section>
-          )}
-        </Dropzone>
-
-        <div className="alert alert-light" role="alert">
-          {message}
+        <div>
+        <div class="login container w-50 register">
+        <div class="card-columns d-flex justify-content-center">
+                <h2>File Upload</h2>
         </div>
-
-        {fileInfos.length > 0 && (
-          <div className="card">
-            <div className="card-header">List of Files</div>
-            <ul className="list-group list-group-flush">
-              {fileInfos.map((file, index) => (
-                <li className="list-group-item" key={index}>
-                  <a href={file.url}>{file.name}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+        <form onSubmit={submitFile}>  
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Upload Files : </label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" onChange={(e) => setSelectedFile(e.target.files[0])}/>
+                </div>            
+            <div class="card-columns d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </div>  
+            
+        </form>
+        </div>
+        <div class="login container w-50 register">
+        <div class="card-columns d-flex justify-content-center">
+                <h2>Message Upload</h2>
+        </div>
+        <form onSubmit={submitMsg}>
+                 <div class="form-group">
+                     <label for="exampleFormControlTextarea1">Upload Messages:  </label>
+                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={e => setMsg(e.target.value)}></textarea>
+                </div>           
+            <div class="card-columns d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </div>  
+            
+        </form>
+        
+        </div> 
+    </div>
     );
-  }
 }
+ 
+export default FileUpload;
