@@ -3,13 +3,16 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/userContext";
 import ErrorNotice from "../../components/misc/ErrorNotice";
+import { RegisterApi } from '../../services/auth.service';
+import { APP_USER_TOKEN } from '../../config';
 
 function Register () {
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [passwordCheck, setPasswordCheck] = useState();
-    const [displayName, setDisplayName] = useState();
+    const [re_password, setPasswordCheck] = useState();
+    const [name, setDisplayName] = useState();
+    const [user_type, setUserType] = useState();
     const [error, setError] = useState();
 
     const { setUserData } = useContext(UserContext);
@@ -19,17 +22,17 @@ function Register () {
         e.preventDefault();
 
         try{
-            const newUser = {email, password, passwordCheck, displayName};
-            await axios.post("http://localhost:5000/users/register", newUser);
-            const loginResponse = await axios.post("http://localhost:5000/users/login", {
-                email, password
-            });
-            setUserData({
-                token: loginResponse.data.token,
-                user: loginResponse.data.user
-            });
-            localStorage.setItem("auth-token", loginResponse.data.token);
-            history.push("/");
+            const newUser = {email, password, re_password, user_type, name};
+            await RegisterApi(newUser);
+           // const loginResponse = await axios.post("http://localhost:5000/user/login", {
+           //     email, password
+           // });
+          //  setUserData({
+               // token: loginResponse?.data.token,
+            //    user: loginResponse?.data.user
+           // });
+            //localStorage.setItem(APP_USER_TOKEN, loginResponse.data.token);
+          //  history.push("/login");
         } catch(err) {
             err.response.data.msg && setError(err.response.data.msg)
         }
@@ -45,20 +48,24 @@ function Register () {
         <form onSubmit={submit}>
             <div class="form-group">
                 <label for="exampleInputEmail1 text-start">Email address</label>
-                <input type="email" class="form-control" placeholder="Enter email" onChange={e => setEmail(e.target.value)}/>
+                <input type="email" class="form-control" placeholder="Enter email" onChange={e => setEmail(e.target.value)} required/>
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+                <input type="password" class="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} required/>
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Confirm Password</label>
-                <input type="password" class="form-control" placeholder="Confirm Password" onChange={e => setPasswordCheck(e.target.value)}/>
+                <input type="password" class="form-control" placeholder="Confirm Password" onChange={e => setPasswordCheck(e.target.value)} required/>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Display Name</label>
+                <label for="exampleInputPassword1">User Type</label>
+                <input type="text" class="form-control" id="uType" placeholder="User Type" onChange={e => setUserType(e.target.value)}/>
+                </div>   
+                <div class="form-group">
+                <label for="exampleInputPassword1">Name</label>
                 <input type="text" class="form-control" id="display-name" placeholder="Display Name" onChange={e => setDisplayName(e.target.value)}/>
-            </div>    
+            </div>       
             <div class="card-columns d-flex justify-content-center mt-4">
             <button type="submit" class="btn btn-primary mt-4">Submit</button>
             </div>  
