@@ -1,10 +1,8 @@
-const express = require("express");
-const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
-const apiRoutes = require("./routes/route.api");
 const { connect } = require("./Startups/Database");
+const app = require("./app");
 require("dotenv").config();
 
 const startApp = async () => {
@@ -13,25 +11,7 @@ const startApp = async () => {
     await connect();
     console.log("Connected to database");
 
-    // set up express
-    const app = express();
-    app.use(express.json());
-    app.use(cors());
-
-    //Set up mongoose
-    await connect();
-
-    //Set up routes
-    //API routes
-    app.use("/api", apiRoutes);
-
-    // serve static assests
     if (process.env.NODE_ENV === "production") {
-      app.use(express.static("public"));
-      app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, `public`, `index.html`));
-      });
-
       // start HTTPS server
       const PORT = process.env.PORT || 8080;
 
